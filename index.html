@@ -39,6 +39,12 @@
             scrollbar-gutter: stable;
         }
 
+        .prevent-select {
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+        }
+
         body {
             font-family: 'JetBrains Mono', monospace;
             background-color: var(--black);
@@ -766,7 +772,7 @@
             }
 
             .scroll-indicator {
-                font-size: 0.55rem;
+                font-size: 0.65rem;
                 bottom: 1rem;
                 padding: 4px 8px;
             }
@@ -857,7 +863,7 @@
         }
     </style>
 </head>
-<body>
+<body class="prevent-select">
     <!-- Scroll Progress -->
     <div id="scroll-progress"></div>
 
@@ -888,51 +894,22 @@
         </div>
     </section>
 
-    <!-- Philosophy Section -->
-    <section class="philosophy">
-        <div class="container">
-            <span class="section-number">02</span>
-            <h2 class="section-title reveal">Approach</h2>
-            <div class="philosophy-grid">
-                <div class="philosophy-item reveal">
-                    <div class="philosophy-label">User Centricity</div>
-                    <p class="philosophy-text">
-                        Tu non sei il tuo utente. Progettare per se stessi è il modo più rapido per fallire.
-                    </p>
-                </div>
-
-                <div class="philosophy-item reveal">
-                    <div class="philosophy-label">80/20 Principle</div>
-                    <p class="philosophy-text">
-                        L'80% del valore deriva dal 20% delle funzionalità. Senza rumore, resta il valore.
-                    </p>
-                </div>
-
-                <div class="philosophy-item reveal">
-                    <div class="philosophy-label">Lean & Fail Fast</div>
-                    <p class="philosophy-text">
-                        Build-Measure-Learn. Sbagliare subito per vincere dopo. <u>Done</u> significa utilizzabile.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Work Section -->
     <section class="work">
         <div class="container">
-            <span class="section-number">03</span>
+            <span class="section-number">02</span>
             <h2 class="section-title reveal">Selected Work</h2>
             <div class="work-grid">
                 <div class="work-card reveal">
                     <div class="work-number">PROJECT 01</div>
-                    <h3 class="work-title">Neural Portfolio</h3>
+                    <h3 class="work-title">Neural Link</h3>
                     <p class="work-description">
                         Mappa neurale interattiva che connette idee e concetti in modo dinamico. Architettura vettoriale scalabile.
                     </p>
                     <div class="work-tech">
                         <span class="tech-tag">HTML5</span>
                         <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JS</span>
                     </div>
                 </div>
 
@@ -960,6 +937,36 @@
                         <span class="tech-tag">Portfolio</span>
                         <span class="tech-tag">Mobile-First</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="philosophy">
+        <div class="container">
+            <span class="section-number">03</span>
+            <h2 class="section-title reveal">Approach</h2>
+            <div class="philosophy-grid">
+                <div class="philosophy-item reveal">
+                    <div class="philosophy-label">User Centricity</div>
+                    <p class="philosophy-text">
+                        Tu non sei il tuo utente. Progettare per se stessi è il modo più rapido per fallire.
+                    </p>
+                </div>
+
+                <div class="philosophy-item reveal">
+                    <div class="philosophy-label">80/20 Principle</div>
+                    <p class="philosophy-text">
+                        L'80% del valore deriva dal 20% delle funzionalità. Senza rumore resta il valore.
+                    </p>
+                </div>
+
+                <div class="philosophy-item reveal">
+                    <div class="philosophy-label">Lean & Fail Fast</div>
+                    <p class="philosophy-text">
+                        Build-Measure-Learn. Sbagliare subito per vincere dopo. <u>Done</u> significa utilizzabile.
+                    </p>
                 </div>
             </div>
         </div>

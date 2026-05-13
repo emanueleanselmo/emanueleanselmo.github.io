@@ -14,7 +14,7 @@ Agisco come un filtro ingegneristico: utilizzo la velocità dell'AI per esplorar
 
 - **User Centricity** – Tu non sei il tuo utente. Progettare per se stessi è il modo più rapido per fallire.
 - **Principio 80/20** – L'80% del valore deriva dal 20% delle funzionalità. Senza rumore, resta il valore.
-- **Lean & Fail Fast** – Build-Measure-Learn. Sbagliare subito per vincere dopo. _Done_ significa utilizzabile.
+- **Lean & Fail Fast** – Build-Measure-Learn. Sbagliare subito per vincere dopo. Done significa utilizzabile.
 
 
 ## 🔗 Contatti
