@@ -328,6 +328,11 @@
             transition: all 0.4s var(--transition);
             overflow: hidden;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            user-select: none;
+        }
+
+        .work-card:active {
+            transform: scale(0.97);
         }
 
         .work-card::before {
@@ -352,6 +357,10 @@
             border-color: rgba(204, 255, 0, 0.25);
             box-shadow: 0 16px 40px rgba(204, 255, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.4);
             background: rgba(20, 20, 20, 0.8);
+        }
+
+        .work-card:hover:active {
+            transform: translateY(-12px) scale(0.97);
         }
 
         .work-number {
@@ -861,6 +870,94 @@
         img {
             loading: lazy;
         }
+
+        /* GAMIFICATION POPUP */
+        .coming-soon-popup {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(100%);
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-bottom: none;
+            padding: 2rem;
+            max-width: 90vw;
+            width: 100%;
+            max-height: 80vh;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 -8px 32px rgba(204, 255, 0, 0.1);
+            animation: slideUpPopup 0.5s var(--transition) forwards;
+        }
+
+        .coming-soon-popup.hidden {
+            animation: slideDownPopup 0.5s var(--transition) forwards;
+        }
+
+        .coming-soon-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s var(--transition);
+            pointer-events: none;
+        }
+
+        .coming-soon-popup-overlay.active {
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .coming-soon-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            line-height: 1.3;
+            color: var(--main-color);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            margin: 0;
+        }
+
+        @keyframes slideUpPopup {
+            from {
+                transform: translateX(-50%) translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDownPopup {
+            from {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .coming-soon-popup {
+                animation: none;
+                transform: translateX(-50%) translateY(0);
+            }
+            .coming-soon-popup.hidden {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="prevent-select">
@@ -971,6 +1068,12 @@
             </div>
         </div>
     </section>
+
+    <!-- Coming Soon Popup -->
+    <div class="coming-soon-popup-overlay" id="coming-soon-overlay"></div>
+    <div class="coming-soon-popup" id="coming-soon-popup" style="display: none;">
+        <p class="coming-soon-text">Ehi! Non avere fretta!<br>Questo progetto arriverà presto!</p>
+    </div>
 
     <!-- Contact Section -->
     <section class="contact">
@@ -1145,6 +1248,98 @@
             this.style.top = '-40px';
         });
         document.body.insertBefore(skipLink, document.body.firstChild);
+
+        // Gamification: Coming Soon Popup
+        const popup = document.getElementById('coming-soon-popup');
+        const overlay = document.getElementById('coming-soon-overlay');
+        const workCards = document.querySelectorAll('.work-card');
+        let popupTimeout;
+
+        // Play soft pop sound
+        function playPopSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Pop sound: quick frequency sweep
+                oscillator.frequency.setValueAtTime(500, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.1);
+                
+                // Volume envelope
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (e) {
+                // Fallback if audio context not available
+                console.debug('Pop sound could not be played');
+            }
+        }
+
+        // Show popup
+        function showComingSoonPopup() {
+            popup.style.display = 'flex';
+            popup.classList.remove('hidden');
+            overlay.classList.add('active');
+            playPopSound();
+            
+            // Clear previous timeout
+            if (popupTimeout) clearTimeout(popupTimeout);
+            
+            // Auto-hide after 2.5 seconds
+            popupTimeout = setTimeout(() => {
+                closeComingSoonPopup();
+            }, 2500);
+        }
+
+        // Close popup
+        function closeComingSoonPopup() {
+            popup.classList.add('hidden');
+            overlay.classList.remove('active');
+            
+            setTimeout(() => {
+                popup.style.display = 'none';
+                popup.classList.remove('hidden');
+            }, 500);
+        }
+
+        // Add click event to work cards
+        workCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                showComingSoonPopup();
+            });
+        });
+
+        // Close popup with click on overlay
+        overlay.addEventListener('click', () => {
+            closeComingSoonPopup();
+        });
+
+        // Close popup with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && popup.style.display !== 'none') {
+                closeComingSoonPopup();
+            }
+        });
+
+        // Close popup with touch (for mobile)
+        popup.addEventListener('touchstart', (e) => {
+            // Only close if touching the popup itself, not preventing accidental closes
+            if (e.target === popup || e.target === popup.querySelector('.coming-soon-text')) {
+                closeComingSoonPopup();
+            }
+        });
+        
+        // Also close on overlay touch
+        overlay.addEventListener('touchstart', () => {
+            closeComingSoonPopup();
+        });
     </script>
 </body>
 </html>
