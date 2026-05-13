@@ -363,6 +363,11 @@
             transform: translateY(-12px) scale(0.97);
         }
 
+        .work-card.popup-open {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
         .work-number {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
@@ -1254,6 +1259,7 @@
         const overlay = document.getElementById('coming-soon-overlay');
         const workCards = document.querySelectorAll('.work-card');
         let popupTimeout;
+        let isPopupOpen = false;
 
         // Play soft pop sound
         function playPopSound() {
@@ -1286,6 +1292,13 @@
             popup.style.display = 'flex';
             popup.classList.remove('hidden');
             overlay.classList.add('active');
+            isPopupOpen = true;
+            
+            // Disable work cards
+            workCards.forEach(card => {
+                card.classList.add('popup-open');
+            });
+            
             playPopSound();
             
             // Clear previous timeout
@@ -1301,6 +1314,12 @@
         function closeComingSoonPopup() {
             popup.classList.add('hidden');
             overlay.classList.remove('active');
+            isPopupOpen = false;
+            
+            // Re-enable work cards
+            workCards.forEach(card => {
+                card.classList.remove('popup-open');
+            });
             
             setTimeout(() => {
                 popup.style.display = 'none';
@@ -1311,32 +1330,28 @@
         // Add click event to work cards
         workCards.forEach(card => {
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                showComingSoonPopup();
+                if (!isPopupOpen) {
+                    e.preventDefault();
+                    showComingSoonPopup();
+                }
             });
         });
 
-        // Close popup with click on overlay
-        overlay.addEventListener('click', () => {
-            closeComingSoonPopup();
+        // Close popup with click on overlay (but not on popup itself)
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeComingSoonPopup();
+            }
         });
 
         // Close popup with ESC key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && popup.style.display !== 'none') {
+            if (e.key === 'Escape' && isPopupOpen) {
                 closeComingSoonPopup();
             }
         });
 
-        // Close popup with touch (for mobile)
-        popup.addEventListener('touchstart', (e) => {
-            // Only close if touching the popup itself, not preventing accidental closes
-            if (e.target === popup || e.target === popup.querySelector('.coming-soon-text')) {
-                closeComingSoonPopup();
-            }
-        });
-        
-        // Also close on overlay touch
+        // Close popup with touch on overlay (for mobile)
         overlay.addEventListener('touchstart', () => {
             closeComingSoonPopup();
         });
