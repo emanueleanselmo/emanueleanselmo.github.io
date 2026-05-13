@@ -36,6 +36,7 @@
 
         html {
             scroll-behavior: smooth;
+            scrollbar-gutter: stable;
         }
 
         body {
@@ -138,7 +139,7 @@
 
         .hero-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3rem, 15vw, 12rem);
+            font-size: clamp(2.2rem, 13vw, 10rem);
             line-height: 0.9;
             letter-spacing: 0.02em;
             color: var(--text);
@@ -146,6 +147,7 @@
             opacity: 0;
             animation: fadeInUp 1.2s var(--transition) 0.3s forwards;
             font-weight: 400;
+            white-space: nowrap;
         }
 
         .hero-name span {
