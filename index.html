@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Emanuele Anselmo - Frontend Developer & UX/UI Designer. Filtro ingegneristico tra idea e realtà.">
-    <meta name="keywords" content="Emanuele Anselmo, Frontend Developer, UX/UI Designer, Engineering, Web Development">
+    <meta name="description" content="Emanuele Anselmo - UX/UI Designer & Student. Filtro ingegneristico tra idea e realtà.">
+    <meta name="keywords" content="Emanuele Anselmo, UX/UI Designer & Student, Engineering, Web Development">
     <meta name="author" content="Emanuele Anselmo">
     <meta property="og:title" content="Emanuele Anselmo - Engineering Core">
     <meta property="og:description" content="Non sono un programmatore. Sono un filtro.">
@@ -22,7 +22,7 @@
             --surface-light: #1a1a1a;
             --text: #f5f5f5;
             --text-dim: #8a8a8a;
-            --accent-lime: #ccff00;
+            --main-color: #ffea00;
             --accent-orange: #ff6b35;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
             --transition-fast: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -59,7 +59,7 @@
         }
 
         body::-webkit-scrollbar-thumb {
-            background: var(--accent-lime);
+            background: var(--main-color);
             border-radius: 4px;
             background-clip: content-box;
         }
@@ -99,7 +99,7 @@
             left: 0;
             width: 100%;
             height: var(--scroll-height, 0%);
-            background: var(--accent-lime);
+            background: var(--main-color);
             transition: height 0.1s ease-out;
             border-radius: 2px;
             box-shadow: 0 0 15px rgba(204, 255, 0, 0.4);
@@ -168,28 +168,69 @@
             margin: 0;
         }
 
+        /* ---------- IMPROVED SCROLL INDICATOR WITH ARROW ---------- */
         .scroll-indicator {
             position: absolute;
-            bottom: 2rem;
-            left: 50%;
+            left: calc((100% - (2rem + 2px)) / 2);  /* desktop: right: 2rem + larghezza 2px */
             transform: translateX(-50%);
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            opacity: 0;
-            animation: fadeInUp 1s var(--transition) 2s forwards, bounce 2s ease-in-out 3s infinite;
-            transition: all 0.3s var(--transition);
+            bottom: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .scroll-indicator:hover {
-            color: var(--accent-lime);
+        .scroll-indicator::after {
+            content: "↓";
+            font-size: 1.35rem;
+            font-weight: normal;
+            line-height: 1;
+            background: none;
+            width: auto;
+            height: auto;
+            color: var(--main-color);
+            animation: bounceArrow 1.8s ease-in-out infinite;
+            transition: transform 0.2s var(--transition);
+            display: inline-block;
+            text-shadow: 0 0 6px rgba(204, 255, 0, 0.3);
         }
+
+        .scroll-indicator:hover::after {
+            animation: bounceArrow 1s ease-in-out infinite;
+            transform: translateY(2px);
+        }
+
+        .scroll-indicator:active {
+            transform: translateX(-50%) scale(0.96);
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-indicator::after {
+                animation: none;
+            }
+            .scroll-indicator {
+                animation: fadeInUp 1s var(--transition) 1.8s forwards;
+            }
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(8px);
+                opacity: 1;
+            }
+        }
+        /* ------------------------------------------------ */
 
         /* SECTION LAYOUTS */
         section {
             min-height: 100vh;
             padding: 6rem 2rem;
+            padding-right: calc(2rem + 40px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -215,7 +256,7 @@
         .section-number {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
-            color: var(--accent-lime);
+            color: var(--main-color);
             letter-spacing: 0.25em;
             margin-bottom: 1.5rem;
             display: block;
@@ -237,8 +278,8 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: clamp(1.5rem, 5vw, 3.5rem);
             line-height: 1.15;
-            margin-bottom: 2.5rem;
-            color: var(--accent-lime);
+            margin-bottom: 2rem;
+            color: var(--main-color);
             font-weight: 400;
             letter-spacing: -0.005em;
         }
@@ -247,8 +288,12 @@
             font-size: clamp(0.95rem, 1.8vw, 1.15rem);
             line-height: 1.85;
             color: var(--text-dim);
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 0.3px;
+        }
+
+        .intro-text:last-of-type {
+            margin-bottom: 0;
         }
 
         .intro-text strong {
@@ -287,7 +332,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: var(--accent-lime);
+            background: var(--main-color);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.5s var(--transition);
@@ -326,7 +371,7 @@
             font-size: 0.95rem;
             color: var(--text-dim);
             line-height: 1.65;
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 0.2px;
         }
 
@@ -350,7 +395,7 @@
         .work-card:hover .tech-tag {
             background: rgba(204, 255, 0, 0.08);
             border-color: rgba(204, 255, 0, 0.3);
-            color: var(--accent-lime);
+            color: var(--main-color);
         }
 
         /* PHILOSOPHY SECTION */
@@ -379,13 +424,13 @@
             top: 0;
             width: 2px;
             height: 100%;
-            background: linear-gradient(180deg, var(--accent-lime) 0%, transparent 100%);
+            background: linear-gradient(180deg, var(--main-color) 0%, transparent 100%);
         }
 
         .philosophy-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
-            color: var(--accent-lime);
+            color: var(--main-color);
             letter-spacing: 0.25em;
             margin-bottom: 0.75rem;
             text-transform: uppercase;
@@ -426,7 +471,7 @@
             color: var(--text);
             text-decoration: none;
             padding: 0.95rem 2.2rem;
-            border: 1.5px solid var(--accent-lime);
+            border: 1.5px solid var(--main-color);
             position: relative;
             overflow: hidden;
             transition: all 0.35s var(--transition);
@@ -443,7 +488,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: var(--accent-lime);
+            background: var(--main-color);
             transition: left 0.35s var(--transition);
             z-index: -1;
         }
@@ -458,7 +503,7 @@
         }
 
         .contact-link:focus-visible {
-            outline: 2px solid var(--accent-lime);
+            outline: 2px solid var(--main-color);
             outline-offset: 4px;
         }
 
@@ -496,6 +541,38 @@
             }
         }
 
+        @keyframes slideDown {
+            0% {
+                transform: translateY(-12px);
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(8px);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes slideDownPulse {
+            0% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                opacity: 1;
+            }
+            60% {
+                transform: translateY(10px);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(10px);
+                opacity: 0.1;
+            }
+        }
+
         /* REVEAL ON SCROLL */
         .reveal {
             opacity: 0;
@@ -508,14 +585,22 @@
             transform: translateY(0);
         }
 
+        /* HIDE SCROLL INDICATOR AT BOTTOM */
+        .scroll-indicator.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
         /* FOCUS VISIBLE FOR ACCESSIBILITY */
         a:focus-visible {
-            outline: 2px solid var(--accent-lime);
+            outline: 2px solid var(--main-color);
             outline-offset: 4px;
         }
 
         button:focus-visible {
-            outline: 2px solid var(--accent-lime);
+            outline: 2px solid var(--main-color);
             outline-offset: 4px;
         }
 
@@ -538,6 +623,7 @@
         @media (max-width: 1024px) {
             section {
                 padding: 5rem 1.5rem;
+                padding-right: calc(1.5rem + 30px);
             }
 
             #scroll-progress {
@@ -567,11 +653,16 @@
             .contact-link {
                 width: 100%;
             }
+
+            .scroll-indicator{
+                left: calc((100% - (1rem + 1.5px)) / 2);  /* tablet: right: 1rem, width: 1.5px */
+            }
         }
 
         @media (max-width: 768px) {
             section {
                 padding: 4rem 1rem;
+                padding-right: calc(1rem + 20px);
             }
 
             .hero {
@@ -587,7 +678,14 @@
             }
 
             .scroll-indicator {
+                left: calc((100% - (0.75rem + 1px)) / 2);  /* mobile: right: 0.75rem, width: 1px */
                 bottom: 1.5rem;
+                padding: 6px 12px;
+                gap: 0.4rem;
+            }
+
+            .scroll-indicator::after {
+                font-size: 1.1rem;
             }
 
             #scroll-progress {
@@ -615,7 +713,7 @@
 
             .intro-text {
                 font-size: 0.9rem;
-                margin-bottom: 1.25rem;
+                margin-bottom: 1rem;
             }
 
             .work-card {
@@ -654,6 +752,7 @@
         @media (max-width: 480px) {
             section {
                 padding: 3rem 0.75rem;
+                padding-right: calc(0.75rem + 15px);
             }
 
             .hero-content {
@@ -671,6 +770,7 @@
             .scroll-indicator {
                 font-size: 0.6rem;
                 bottom: 1rem;
+                padding: 4px 10px;
             }
 
             .container {
@@ -691,7 +791,7 @@
             .intro-text {
                 font-size: 0.85rem;
                 line-height: 1.6;
-                margin-bottom: 1rem;
+                margin-bottom: 0.75rem;
             }
 
             .work-grid {
@@ -749,7 +849,7 @@
 
         /* UTILITY */
         .highlight {
-            color: var(--accent-lime);
+            color: var(--main-color);
         }
 
         /* LAZY LOADING IMAGES */
@@ -766,9 +866,9 @@
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-name" id="hero-name"></h1>
-            <p class="hero-tagline">Frontend Developer & UX/UI Designer</p>
+            <p class="hero-tagline">UX/UI Designer & Student</p>
         </div>
-        <div class="scroll-indicator">Scorri per esplorare</div>
+        <div class="scroll-indicator" role="button" aria-label="Scorri verso il basso per esplorare il contenuto" tabindex="0">Scorri per esplorare</div>
     </section>
 
     <!-- Intro Section -->
@@ -815,7 +915,7 @@
                     <div class="work-number">PROJECT 02</div>
                     <h3 class="work-title">Data Liberation</h3>
                     <p class="work-description">
-                        Dashboard proprietaria per il controllo completo dei dati personali. 
+                        Dashboard proprietaria per il controllo completo dei dati musicali personali. 
                         Nato da una restrizione tecnica, trasformato in soluzione autonoma.
                     </p>
                     <div class="work-tech">
@@ -906,6 +1006,21 @@
             heroName.appendChild(span);
         });
 
+        // Scroll to next section on scroll-indicator click
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        const introSection = document.querySelector('.intro');
+        
+        scrollIndicator.addEventListener('click', () => {
+            introSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        // Also handle keyboard Enter/Space for accessibility
+        scrollIndicator.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                introSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+
         // Scroll progress indicator with performance optimization
         const scrollProgress = document.getElementById('scroll-progress');
         let ticking = false;
@@ -946,7 +1061,49 @@
 
         reveals.forEach(element => observer.observe(element));
 
-        // Smooth scroll for links (fallback for older browsers)
+        // Hide scroll indicator when reaching bottom of page
+        const footerSentinel = document.createElement('div');
+        footerSentinel.style.position = 'absolute';
+        footerSentinel.style.bottom = '0';
+        footerSentinel.style.height = '10px';
+        footerSentinel.style.width = '100%';
+        footerSentinel.style.pointerEvents = 'none';
+        document.body.appendChild(footerSentinel);
+
+        const bottomObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    scrollIndicator.classList.add('hidden');
+                } else {
+                    scrollIndicator.classList.remove('hidden');
+                }
+            });
+        }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
+
+        bottomObserver.observe(footerSentinel);
+        
+        // Also hide when contact section is fully visible (alternative fallback)
+        const contactSection = document.querySelector('.contact');
+        const contactObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    scrollIndicator.classList.add('hidden');
+                } else if (entry.intersectionRatio < 0.3) {
+                    // Only remove hidden if we are not at bottom
+                    if (!footerSentinel.getBoundingClientRect().top <= window.innerHeight) {
+                        scrollIndicator.classList.remove('hidden');
+                    }
+                }
+            });
+        }, { threshold: [0, 0.3, 0.5, 1], rootMargin: '0px' });
+        contactObserver.observe(contactSection);
+
+        // Initial check: if page loads already scrolled to bottom (unlikely)
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 10) {
+            scrollIndicator.classList.add('hidden');
+        }
+
+        // Smooth scroll for any hash links (fallback)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -980,7 +1137,6 @@
 
         // Preload next section for better performance
         window.addEventListener('load', () => {
-            // Mark page as fully loaded for subtle loading state change
             document.body.style.opacity = '1';
         });
 
@@ -988,7 +1144,7 @@
         const skipLink = document.createElement('a');
         skipLink.href = '#main-content';
         skipLink.textContent = 'Skip to main content';
-        skipLink.style.cssText = 'position: absolute; top: -40px; left: 0; background: var(--accent-lime); color: var(--black); padding: 8px; z-index: 100;';
+        skipLink.style.cssText = 'position: absolute; top: -40px; left: 0; background: var(--main-color); color: var(--black); padding: 8px; z-index: 100;';
         skipLink.addEventListener('focus', function() {
             this.style.top = '0';
         });
