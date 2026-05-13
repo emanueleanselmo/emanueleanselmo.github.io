@@ -1165,7 +1165,7 @@
                     </div>
                 </div>
 
-                <div class="work-card reveal" data-message="Wait, stai leggendo il codice che LEGGE il codice?&lt;br&gt;Certified meta. 🔄">
+                <div class="work-card reveal" data-message="Ehi, questo progetto è proprio questo sito!">
                     <div class="work-number">PROJECT 03</div>
                     <h3 class="work-title">Engineering Core</h3>
                     <p class="work-description">
@@ -1603,12 +1603,12 @@
         // Font Size Adjustment Logic
         const btnInc = document.getElementById('font-inc');
         const btnDec = document.getElementById('font-dec');
-        let currentFontSize = 100; // Percentuale base
+        let currentFontSize = 110; // Percentuale base
 
         function updateRootFontSize(modifier) {
-            // Limiti per evitare breakdown del layout (80% - 130%)
+            // Limiti per evitare breakdown del layout (80% - 160%)
             const newSize = currentFontSize + modifier;
-            if (newSize >= 80 && newSize <= 130) {
+            if (newSize >= 80 && newSize <= 160) {
                 currentFontSize = newSize;
                 document.documentElement.style.fontSize = `${currentFontSize}%`;
             }
